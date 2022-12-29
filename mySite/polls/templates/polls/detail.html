@@ -1,0 +1,23 @@
+<h1> Details about Question {{ question.id }} </h1>
+<h2> {{ question.question_text }} </h2>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<!-- 
+We are outputting error messages if they are present
+We are explicitly declaring that the method for our form is POST
+because we are sending information
+We're creating a bunch of radio button options in one loop
+to account for each choice for our question. Each radio button
+has an unique id using forloop.counter (comes for free with Python)
+-->
+
+
+<form action="{% url 'polls:vote' question.id %}" method="post">
+  {% csrf_token %}
+  {% for choice in question.choices.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+  {% endfor %}
+  <input type="submit" value="Vote">
+</form>
